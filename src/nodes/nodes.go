@@ -4,14 +4,9 @@ import (
 	"bytes"
 	"golang.org/x/exp/slices"
 	"golang.org/x/net/html"
-	"log"
-	"regexp"
-	"strconv"
+	replacer "habra-tm-habr/src/replacer"
 	"strings"
 )
-
-const RunesInWorld = 5
-const StringTemplate = `(\s|^|\pP)[А-Яа-яA-Za-z]{CHARS_NUM}(\pP|\s)`
 
 func AddSomeTM(bytesArr []byte) (string, error) {
 	strBody := string(bytesArr)
@@ -49,33 +44,10 @@ func nodeReplacer(node *html.Node) {
 
 		nodeIsInArray := slices.Contains(proceedNode, parentDataName)
 		if nodeIsInArray {
-			node.Data = doSomeTM(node.Data)
+			node.Data = replacer.DoSomeTM(node.Data)
 		}
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
 		nodeReplacer(child)
 	}
-}
-
-func doSomeTM(str string) string {
-
-	compiledStr := strings.Replace(StringTemplate, "CHARS_NUM", strconv.Itoa(RunesInWorld), 1)
-	reg := regexp.MustCompile(compiledStr)
-
-	replFn := func(s string) string {
-
-		log.Printf("{%s}", s)
-
-		runes := []rune(s)
-		runeCount := len(runes)
-
-		lastRune := runes[runeCount-1]
-		runes[runeCount-1] = '™'
-
-		return string(runes) + string(lastRune)
-	}
-
-	result := reg.ReplaceAllStringFunc(str, replFn)
-
-	return result
 }
