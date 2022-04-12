@@ -16,7 +16,6 @@ COPY ./src ./src
 RUN make go-build
 
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
-#CMD [ "./habra-tm-habr" ]
 
 FROM alpine:latest
 WORKDIR /app
