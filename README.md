@@ -11,6 +11,9 @@ Make some ™ on html page habrahabr
   docker-compose --file ./docker/docker-compose.yml build --force
 ```
 
+```bash
+  docker ps -s  
+```
 
 ## Git papers
 

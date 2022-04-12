@@ -9,8 +9,6 @@ COPY go.sum ./
 
 COPY Makefile ./
 
-RUN go mod download
-
 COPY ./src ./src
 
 RUN make go-build
