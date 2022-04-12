@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-const proxyAddress1 = "127.0.0.1:8080"
+const proxyAddress1 = ":8080"
 const siteAddress = "http://habrahabr.ru"
 
 func main() {
