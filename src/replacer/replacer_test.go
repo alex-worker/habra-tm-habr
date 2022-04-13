@@ -12,7 +12,7 @@ func TestReplacer(t *testing.T) {
 	RunSpecs(t, "Replacer Suite")
 }
 
-var _ = Describe("replacer", Label("DoSomeTM"), func() {
+var _ = Describe("replacer", func() {
 	Describe("DoSomeTM test", func() {
 		It("Worked", func() {
 			testStr := "Наверное, в любых проектах есть необходимость использования различных секретных данных - строки подключения к БД, АПИ-ключи внешних сервисов и т.д.."
