@@ -11,7 +11,7 @@ go-run:
 	go run ./src/main.go
 
 go-test:
-	ginkgo -v ./...
+	go test -v ./...
 
 docker-build:
 	docker-compose --file ./docker/docker-compose.yml build --force
