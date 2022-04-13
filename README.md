@@ -28,3 +28,10 @@ Make some ™ on html page habrahabr
 ```shell
   git remote set-url origin "https://alex-worker@github.com/alex-worker/habra-tm-habr.git"
 ```
+
+## Ginkgo papers
+
+```shell
+  go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo
+  go get github.com/onsi/gomega/...
+```
