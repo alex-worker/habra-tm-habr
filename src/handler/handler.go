@@ -1,10 +1,7 @@
 package handler
 
 import (
-	"habra-tm-habr/src/nodes"
-	"habra-tm-habr/src/replacer"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -44,41 +41,20 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf(err.Error())
 	}
 
-	contentType, _ := GetContentType(resp.Header)
+	var respHandler func(w http.ResponseWriter, resp *http.Response) error
 
-	var myBytes []byte
-
-	// HasPrefix for "text/html; charset=utf-8" case
-	if strings.HasPrefix(contentType, "text/html") {
-		myHtml, err := nodes.BytesToHTML(resp.Body)
-		if err != nil {
-			log.Println(err.Error())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		nodes.Update(myHtml, replacer.DoSomeTM)
-		myBytes, err = nodes.HTMLToBytes(myHtml)
-		if err != nil {
-			log.Println(err.Error())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+	contentType, err := GetContentType(resp.Header)
+	if err != nil {
+		respHandler = handleRaw
+	} else if strings.HasPrefix(contentType, "text/html") {
+		respHandler = handleHTML
 	} else {
-		myBytes, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Println(err.Error())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
+		respHandler = handleRaw
 	}
-	DelHeaders(resp.Header)
-	copyHeaders(w.Header(), resp.Header)
-	w.WriteHeader(resp.StatusCode)
-	_, err = w.Write(myBytes)
+
+	err = respHandler(w, resp)
 	if err != nil {
 		log.Println(err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		return
 	}
 }
 
