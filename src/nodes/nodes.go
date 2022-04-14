@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"golang.org/x/exp/slices"
 	"golang.org/x/net/html"
-	replacer "habra-tm-habr/src/replacer"
+	"habra-tm-habr/src/replacer"
 	"strings"
 )
 
