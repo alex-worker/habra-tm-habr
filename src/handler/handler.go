@@ -9,7 +9,7 @@ import (
 )
 
 type ProxyHandler struct {
-	siteAddress *url.URL
+	SiteAddress *url.URL
 }
 
 func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -23,9 +23,9 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	cli := http.Client{}
 
 	// set req Host, URL and Request URI to forward a request to the origin server
-	r.Host = p.siteAddress.Host
-	r.URL.Host = p.siteAddress.Host
-	r.URL.Scheme = p.siteAddress.Scheme
+	r.Host = p.SiteAddress.Host
+	r.URL.Host = p.SiteAddress.Host
+	r.URL.Scheme = p.SiteAddress.Scheme
 	r.RequestURI = ""
 
 	DelHeaders(r.Header)
@@ -54,10 +54,4 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 	}
-}
-
-func NewProxyHandler(proxyUrl *url.URL) (http.Handler, error) {
-	return &ProxyHandler{
-		siteAddress: proxyUrl,
-	}, nil
 }

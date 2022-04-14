@@ -18,7 +18,9 @@ func main() {
 		panic(err)
 	}
 
-	myHandler, err := handler.NewProxyHandler(proxyUrl)
+	myHandler := &handler.ProxyHandler{
+		SiteAddress: proxyUrl,
+	}
 	if err != nil {
 		panic(err)
 	}
