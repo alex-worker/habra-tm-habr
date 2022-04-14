@@ -15,13 +15,7 @@ type ProxyHandler struct {
 	siteAddress *url.URL
 }
 
-func NewProxyHandler(proxyUrl *url.URL) (http.Handler, error) {
-	return ProxyHandler{
-		siteAddress: proxyUrl,
-	}, nil
-}
-
-func (p ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodGet {
 		log.Fatalf("Method not supported %s", r.Method)
@@ -91,4 +85,10 @@ func (p ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+func NewProxyHandler(proxyUrl *url.URL) (http.Handler, error) {
+	return &ProxyHandler{
+		siteAddress: proxyUrl,
+	}, nil
 }
