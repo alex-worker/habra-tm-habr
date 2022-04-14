@@ -43,10 +43,8 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	var respHandler func(w http.ResponseWriter, resp *http.Response) error
 
-	contentType, err := GetContentType(resp.Header)
-	if err != nil {
-		respHandler = handleRaw
-	} else if strings.HasPrefix(contentType, "text/html") {
+	contentType, _ := GetContentType(resp.Header)
+	if strings.HasPrefix(contentType, "text/html") {
 		respHandler = handleHTML
 	} else {
 		respHandler = handleRaw
