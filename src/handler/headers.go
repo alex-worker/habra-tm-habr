@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"log"
 	"net/http"
 )
 
@@ -43,14 +42,6 @@ func GetContentType(header http.Header) (string, error) {
 		}
 	}
 	return "", errors.New("Content-Type not found")
-}
-
-func ShowHeaders(header http.Header) {
-	for key, value := range header {
-		//for _, value2 := range value {
-		log.Println(key, ": ", value)
-		//}
-	}
 }
 
 func copyHeaders(dst, src http.Header) {
