@@ -46,6 +46,8 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	contentType, _ := GetContentType(resp.Header)
 
+	var myBytes []byte
+
 	// HasPrefix for "text/html; charset=utf-8" case
 	if strings.HasPrefix(contentType, "text/html") {
 		myHtml, err := nodes.BytesToHTML(resp.Body)
@@ -55,35 +57,28 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		nodes.Update(myHtml, replacer.DoSomeTM)
-		myBytes, err := nodes.HTMLToBytes(myHtml)
-		if err != nil {
-			log.Println(err.Error())
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		DelHeaders(resp.Header)
-		copyHeaders(w.Header(), resp.Header)
-		w.WriteHeader(resp.StatusCode)
-		_, err = w.Write(myBytes)
+		myBytes, err = nodes.HTMLToBytes(myHtml)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 	} else {
-		respRaw, err := ioutil.ReadAll(resp.Body)
+		myBytes, err = ioutil.ReadAll(resp.Body)
 		if err != nil {
 			log.Println(err.Error())
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		copyHeaders(w.Header(), resp.Header)
-		w.WriteHeader(resp.StatusCode)
-		_, err = w.Write(respRaw)
-		if err != nil {
-			//log.Println(err.Error())
-			return
-		}
+	}
+	DelHeaders(resp.Header)
+	copyHeaders(w.Header(), resp.Header)
+	w.WriteHeader(resp.StatusCode)
+	_, err = w.Write(myBytes)
+	if err != nil {
+		log.Println(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 }
 
