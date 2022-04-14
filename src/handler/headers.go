@@ -29,13 +29,13 @@ var hopHeaders = []string{
 	//"Content-Encoding",
 }
 
-func DelHeaders(header http.Header) {
+func delHeaders(header http.Header) {
 	for _, h := range hopHeaders {
 		header.Del(h)
 	}
 }
 
-func GetContentType(header http.Header) (string, error) {
+func getContentType(header http.Header) (string, error) {
 	for key, value := range header {
 		if key == "Content-Type" {
 			return value[0], nil
