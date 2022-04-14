@@ -11,7 +11,7 @@ const proxyAddress = ":8080"
 const siteAddress = "http://habrahabr.ru"
 
 func main() {
-	log.Println("Hello world!", proxyAddress, siteAddress)
+	log.Println("Hello world!", proxyAddress, " -> ", siteAddress)
 
 	proxyUrl, err := url.Parse(siteAddress)
 	if err != nil {

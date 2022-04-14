@@ -1,6 +1,6 @@
 up: docker-build docker-up
 
-run: go-run
+run: build go-run
 
 test: build go-test
 
