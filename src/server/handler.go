@@ -61,7 +61,7 @@ func (p ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
-		nodes.NodeAddTM(myHtml, replacer.DoSomeTM)
+		nodes.Update(myHtml, replacer.DoSomeTM)
 		myBytes, err := nodes.HTMLToBytes(myHtml)
 		if err != nil {
 			log.Println(err.Error())
