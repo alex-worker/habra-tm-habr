@@ -4,6 +4,12 @@ run: go-run
 
 test: go-test
 
+build: go-clean go-build
+
+go-clean:
+	go clean
+	rm -rf main
+
 go-build:
 	go build ./src/main.go
 
