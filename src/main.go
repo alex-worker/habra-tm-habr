@@ -1,14 +1,35 @@
 package main
 
 import (
-	"habra-tm-habr/src/server"
+	"habra-tm-habr/src/handler"
 	"log"
+	"net/http"
+	"net/url"
 )
 
-const proxyAddress1 = ":8080"
+const proxyAddress = ":8080"
 const siteAddress = "http://habrahabr.ru"
 
 func main() {
-	log.Println("Hello world!")
-	server.Listen(proxyAddress1, siteAddress)
+	log.Println("Hello world!", proxyAddress, siteAddress)
+
+	proxyUrl, err := url.Parse(siteAddress)
+	if err != nil {
+		panic(err)
+	}
+
+	myHandler, err := handler.NewProxyHandler(proxyUrl)
+	if err != nil {
+		panic(err)
+	}
+
+	srv := &http.Server{
+		Addr:    proxyAddress,
+		Handler: myHandler,
+	}
+
+	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
 }

@@ -1,7 +1,7 @@
-package server
+package handler
 
 import (
-	nodes "habra-tm-habr/src/nodes"
+	"habra-tm-habr/src/nodes"
 	"habra-tm-habr/src/replacer"
 	"io"
 	"io/ioutil"
@@ -15,11 +15,10 @@ type ProxyHandler struct {
 	siteAddress *url.URL
 }
 
-func newProxyHandler(proxyUrl *url.URL) http.Handler {
-	handler := ProxyHandler{
+func NewProxyHandler(proxyUrl *url.URL) (http.Handler, error) {
+	return ProxyHandler{
 		siteAddress: proxyUrl,
-	}
-	return handler
+	}, nil
 }
 
 func (p ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
