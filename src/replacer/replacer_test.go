@@ -1,9 +1,8 @@
-package replacer_test
+package replacer
 
 import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"habra-tm-habr/src/replacer"
 	"testing"
 )
 
@@ -12,13 +11,20 @@ func TestReplacer(t *testing.T) {
 	RunSpecs(t, "Replacer Suite")
 }
 
-var _ = Describe("replacer", func() {
-	Describe("DoSomeTM test", func() {
-		It("Worked", func() {
-			testStr := "Наверное, в любых проектах есть необходимость использования различных секретных данных - строки подключения к БД, АПИ-ключи внешних сервисов и т.д.."
-			actual := replacer.DoSomeTM(testStr)
-			expected := "Наверное, в любых™ проектах есть необходимость использования различных секретных данных - строки подключения к БД, АПИ-ключи™ внешних сервисов и т.д.."
-			Expect(actual).To(Equal(expected))
-		})
+var _ = Describe("DoSomeTM", func() {
+	It("Worked", func() {
+		testStr := "Наверное, в любых проектах есть необходимость использования различных секретных данных - строки подключения к БД, АПИ-ключи внешних сервисов и т.д.."
+		actual := DoSomeTM(testStr)
+		expected := "Наверное, в любых™ проектах есть необходимость использования различных секретных данных - строки подключения к БД, АПИ-ключи™ внешних сервисов и т.д.."
+		Expect(actual).To(Equal(expected))
+	})
+})
+
+var _ = Describe("doReplace", func() {
+	It("Worked", func() {
+		testStr := "Наверное "
+		actual := doReplace(testStr)
+		expected := "Наверное™ "
+		Expect(actual).To(Equal(expected))
 	})
 })
