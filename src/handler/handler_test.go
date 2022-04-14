@@ -4,6 +4,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"io"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -16,19 +17,25 @@ func TestHandler(t *testing.T) {
 }
 
 func TestProxyHandler_ServeHTTP(t *testing.T) {
-
 	fixture := `<html><head><title>Hello</title></head><body><h1>Приве!т</h1></body></html>`
 	expected := `<html><head><title>Hello</title></head><body><h1>Приве™!т</h1></body></html>`
-	backendServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+	var (
+	//mut sync.Mutex
+	//headers http.Header
+	)
+
+	fixtureServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		//log.Println(r.Header)
 		w.WriteHeader(http.StatusOK)
 		_, err := w.Write([]byte(fixture))
 		if err != nil {
 			t.Fatalf(err.Error())
 		}
 	}))
-	defer backendServer.Close()
+	defer fixtureServer.Close()
 
-	backendURL, err := url.Parse(backendServer.URL)
+	backendURL, err := url.Parse(fixtureServer.URL)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,6 +47,11 @@ func TestProxyHandler_ServeHTTP(t *testing.T) {
 	srv := httptest.NewServer(handler)
 	defer srv.Close()
 
+	_, err = url.Parse(srv.URL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	resp, err := http.Get(srv.URL)
 	if err != nil {
 		t.Fatal(err)
@@ -49,8 +61,11 @@ func TestProxyHandler_ServeHTTP(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
 	actual := string(respBody)
 	if actual != expected {
 		t.Errorf("Actual: %s expected: %s", actual, expected)
 	}
+
+	log.Println("resp.Header:", resp.Header)
 }

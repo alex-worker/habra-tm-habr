@@ -11,7 +11,7 @@ func handleRaw(w http.ResponseWriter, resp *http.Response) error {
 		w.WriteHeader(http.StatusInternalServerError)
 		return err
 	}
-	DelHeaders(resp.Header)
+	delHeaders(resp.Header)
 	copyHeaders(w.Header(), resp.Header)
 	w.WriteHeader(resp.StatusCode)
 	_, err = w.Write(myBytes)

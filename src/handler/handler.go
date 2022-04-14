@@ -28,7 +28,7 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	r.URL.Scheme = p.SiteAddress.Scheme
 	r.RequestURI = ""
 
-	DelHeaders(r.Header)
+	delHeaders(r.Header)
 	resp, err := cli.Do(r)
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
@@ -43,7 +43,7 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	var respHandler func(w http.ResponseWriter, resp *http.Response) error
 
-	contentType, _ := GetContentType(resp.Header)
+	contentType, _ := getContentType(resp.Header)
 	if strings.HasPrefix(contentType, "text/html") {
 		respHandler = handleHTML
 	} else {
