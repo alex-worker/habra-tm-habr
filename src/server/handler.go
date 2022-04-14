@@ -2,6 +2,7 @@ package server
 
 import (
 	nodes "habra-tm-habr/src/nodes"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -41,7 +42,12 @@ func (p ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	DelHeaders(r.Header)
 	resp, err := cli.Do(r)
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Printf(err.Error())
+		}
+	}(resp.Body)
 
 	if err != nil {
 		log.Fatalf(err.Error())
@@ -57,10 +63,15 @@ func (p ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// HasPrefix for "text/html; charset=utf-8" case
 	if strings.HasPrefix(contentType, "text/html") {
-		strBody, _ := nodes.AddSomeTM(respRaw)
+		strReader := strings.NewReader(string(respRaw))
+		strBody, err := nodes.AddSomeTM(strReader)
 		copyHeaders(w.Header(), resp.Header)
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
 		w.WriteHeader(resp.StatusCode)
-		_, err := w.Write([]byte(strBody))
+		_, err = w.Write([]byte(strBody))
 		if err != nil {
 			log.Println(err.Error())
 			return

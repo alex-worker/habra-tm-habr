@@ -2,7 +2,7 @@ up: docker-build docker-up
 
 run: go-run
 
-test: go-test
+test: build go-test
 
 build: go-clean go-build
 

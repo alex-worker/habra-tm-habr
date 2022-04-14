@@ -8,28 +8,23 @@ import (
 	"strings"
 )
 
-func AddSomeTM(bytesArr []byte) (string, error) {
-	strBody := string(bytesArr)
-
-	doc, err := html.Parse(strings.NewReader(strBody))
+func AddSomeTM(reader *strings.Reader) (string, error) {
+	doc, err := html.Parse(reader)
 	if err != nil {
 		return "", err
 	}
 
-	return addSomeTM(doc)
-}
+	nodeAddTM(doc)
 
-func addSomeTM(root *html.Node) (string, error) {
-	nodeReplacer(root)
 	var buffer = new(bytes.Buffer)
-	err := html.Render(buffer, root)
+	err = html.Render(buffer, doc)
 	if err != nil {
 		return "", err
 	}
 	return string(buffer.Bytes()), nil
 }
 
-func nodeReplacer(node *html.Node) {
+func nodeAddTM(node *html.Node) {
 	if node.Type == html.TextNode {
 		parentDataName := node.Parent.Data
 
@@ -48,6 +43,6 @@ func nodeReplacer(node *html.Node) {
 		}
 	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
-		nodeReplacer(child)
+		nodeAddTM(child)
 	}
 }
