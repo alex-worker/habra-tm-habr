@@ -21,10 +21,16 @@ var _ = Describe("DoSomeTM", func() {
 })
 
 var _ = Describe("doReplace", func() {
-	It("Worked", func() {
+	It("it must be worked", func() {
 		testStr := "Наверное "
 		actual := doReplace(testStr)
 		expected := "Наверное™ "
+		Expect(actual).To(Equal(expected))
+	})
+	It("it must be worked too", func() {
+		testStr := "Наверное"
+		actual := doReplace(testStr)
+		expected := "Наверно™е"
 		Expect(actual).To(Equal(expected))
 	})
 })
