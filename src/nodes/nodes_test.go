@@ -6,6 +6,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"golang.org/x/net/html"
+	"habra-tm-habr/src/replacer"
 	"regexp"
 	"strings"
 	"testing"
@@ -50,7 +51,7 @@ func Test_nodeReplace(t *testing.T) {
 		t.Run(tc.name, func(tt *testing.T) {
 			tc.mockFunc()
 			query := strToHtml(tc.query)
-			nodeAddTM(query)
+			NodeAddTM(query, replacer.DoSomeTM)
 			actual := htmlToStr(query)
 
 			var result bool
