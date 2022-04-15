@@ -4,6 +4,7 @@ import (
 	"habra-tm-habr/src/handler"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"net/url"
 )
 
@@ -25,12 +26,7 @@ func main() {
 		panic(err)
 	}
 
-	srv := &http.Server{
-		Addr:    proxyAddress,
-		Handler: myHandler,
-	}
-
-	err = srv.ListenAndServe()
+	err = http.ListenAndServe(proxyAddress, myHandler)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
