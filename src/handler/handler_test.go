@@ -12,9 +12,17 @@ import (
 type HeadersChan chan map[string][]string
 type BodyChan chan []byte
 
-//func get(server, url, respChan ) {
-//
-//}
+func doGet(t *testing.T, srvUrl string, bodyChan BodyChan) {
+	resp, err := http.Get(srvUrl)
+	if err != nil {
+		t.Error(err)
+	}
+	respBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	bodyChan <- respBody
+}
 
 func TestProxyHandler_ServeHTTP(t *testing.T) {
 	fixture := `<html><head><title>Hello</title></head><body><h1>Приве!т</h1></body></html>`
@@ -50,17 +58,7 @@ func TestProxyHandler_ServeHTTP(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	go func() {
-		resp, err := http.Get(srv.URL)
-		if err != nil {
-			t.Error(err)
-		}
-		respBody, err := io.ReadAll(resp.Body)
-		if err != nil {
-			t.Errorf(err.Error())
-		}
-		bodyChan <- respBody
-	}()
+	go doGet(t, srv.URL, bodyChan)
 
 	respHeaders := <-headersChan
 	respBody := <-bodyChan
