@@ -28,3 +28,16 @@ Make some ™ on html page habrahabr
 ```shell
   git remote set-url origin "https://alex-worker@github.com/alex-worker/habra-tm-habr.git"
 ```
+
+## "net/http/pprof"
+
+```
+    r.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+    r.HandleFunc("/debug/pprof/profile", pprof.Profile)
+    r.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+    r.HandleFunc("/debug/pprof/trace", pprof.Trace)
+```
+
+```bash
+  go tool pprof main http://127.0.0.1:9090/debug/pprof/profile
+```
