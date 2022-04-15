@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-const RunesInWorld = 5
+const RunesInWorld = 6
 const StringTemplate = `(\s|^|\pP)[А-Яа-яA-Za-z]{CHARS_NUM}(\pP|\s)`
 
 func doReplace(s string) string {
