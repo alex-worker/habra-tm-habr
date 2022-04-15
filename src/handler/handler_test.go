@@ -1,8 +1,6 @@
 package handler
 
 import (
-	//. "github.com/onsi/ginkgo/v2"
-	//. "github.com/onsi/gomega"
 	"io"
 	"log"
 	"net/http"
@@ -11,17 +9,19 @@ import (
 	"testing"
 )
 
-//func TestHandler(t *testing.T) {
-//	RegisterFailHandler(Fail)
-//	RunSpecs(t, "Handler Suite")
+type HeadersChan chan map[string][]string
+type BodyChan chan []byte
+
+//func get(server, url, respChan ) {
+//
 //}
 
 func TestProxyHandler_ServeHTTP(t *testing.T) {
 	fixture := `<html><head><title>Hello</title></head><body><h1>Приве!т</h1></body></html>`
 	expected := `<html><head><title>Hello</title></head><body><h1>Приве™!т</h1></body></html>`
 
-	headersChan := make(chan map[string][]string)
-	bodyChan := make(chan []byte)
+	headersChan := make(HeadersChan)
+	bodyChan := make(BodyChan)
 
 	fixtureServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		headersChan <- r.Header
