@@ -17,6 +17,12 @@ func doGet(t *testing.T, srvUrl string, bodyChan BodyChan) {
 	if err != nil {
 		t.Error(err)
 	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			t.Error(err)
+		}
+	}(resp.Body)
 	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		t.Errorf(err.Error())

@@ -3,6 +3,8 @@ package handler
 import (
 	"habra-tm-habr/src/nodes"
 	"habra-tm-habr/src/replacer"
+	"io"
+	"log"
 	"net/http"
 )
 
@@ -12,6 +14,12 @@ func handleHTML(w http.ResponseWriter, resp *http.Response) error {
 		w.WriteHeader(http.StatusInternalServerError)
 		return err
 	}
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Print(err.Error())
+		}
+	}(resp.Body)
 	nodes.Update(myHtml, replacer.DoSomeTM)
 	myBytes, err := nodes.HTMLToBytes(myHtml)
 	if err != nil {
