@@ -1,20 +1,12 @@
 package handler
 
 import (
-	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 )
 
 func handleRaw(w http.ResponseWriter, resp *http.Response) error {
 	myBytes, err := ioutil.ReadAll(resp.Body)
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Println(err.Error())
-		}
-	}(resp.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return err
