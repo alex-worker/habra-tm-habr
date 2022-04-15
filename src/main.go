@@ -8,19 +8,22 @@ import (
 	"net/url"
 )
 
+const profileAddress = ":9090"
+
 const proxyAddress = ":8080"
 const siteAddress = "http://habrahabr.ru"
 
 func main() {
 
 	go func() {
-		err := http.ListenAndServe(":9090", nil)
+		log.Printf("Profile address: %v/debug/pprof/\n", profileAddress)
+		err := http.ListenAndServe(profileAddress, nil)
 		if err != nil {
 			log.Fatalf(err.Error())
 		}
 	}()
 
-	log.Println("Hello world!", proxyAddress, " -> ", siteAddress)
+	log.Printf("Proxy address %v -> %v\n", proxyAddress, siteAddress)
 
 	proxyUrl, err := url.Parse(siteAddress)
 	if err != nil {
