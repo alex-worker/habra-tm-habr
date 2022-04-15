@@ -32,6 +32,10 @@ Make some ™ on html page habrahabr
 ## "net/http/pprof"
 
 ```
+http://localhost:9090/debug/pprof/
+```
+
+```
     r.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
     r.HandleFunc("/debug/pprof/profile", pprof.Profile)
     r.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
