@@ -25,8 +25,8 @@ func doGet(t *testing.T, srvUrl string, bodyChan BodyChan) {
 }
 
 func TestProxyHandler_ServeHTTP(t *testing.T) {
-	fixture := `<html><head><title>Hello</title></head><body><h1>Приве!т</h1></body></html>`
-	expected := `<html><head><title>Hello</title></head><body><h1>Приве™!т</h1></body></html>`
+	fixture := `<html><head><title>Hello</title></head><body><h1>запасы!</h1></body></html>`
+	expected := `<html><head><title>Hello</title></head><body><h1>запасы™!</h1></body></html>`
 
 	headersChan := make(HeadersChan)
 	bodyChan := make(BodyChan)

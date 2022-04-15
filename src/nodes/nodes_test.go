@@ -6,7 +6,7 @@ import (
 )
 
 func Test_BytesToHTML_HTMLToBytes(t *testing.T) {
-	fixture := `<html><head><title>Hello</title></head><body><h1>Приве!т</h1></body></html>`
+	fixture := `<html><head><title>Hello</title></head><body><h1>Привет!</h1></body></html>`
 
 	myHTML, err := BytesToHTML(strings.NewReader(fixture))
 	if err != nil {
