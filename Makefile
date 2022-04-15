@@ -6,6 +6,8 @@ test: build go-test
 
 build: go-clean go-build
 
+clean: go-clean
+
 go-clean:
 	go clean
 	rm -rf main
