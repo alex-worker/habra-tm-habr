@@ -53,7 +53,7 @@ func TestProxyHandler_ServeHTTP(t *testing.T) {
 	}
 
 	handler := &ProxyHandler{
-		SiteAddress: backendURL,
+		Processor: &RequestProcessor{SiteAddress: backendURL},
 	}
 
 	srv := httptest.NewServer(handler)

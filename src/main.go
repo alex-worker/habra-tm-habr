@@ -30,12 +30,12 @@ func main() {
 		panic(err)
 	}
 
-	myRequestProcessor := &handler.RequestProcessor{
+	myRequestProcessor := handler.RequestProcessor{
 		SiteAddress: proxyUrl,
 	}
 
 	myHandler := &handler.ProxyHandler{
-		Processor: myRequestProcessor,
+		Processor: &myRequestProcessor,
 	}
 
 	if err != nil {
