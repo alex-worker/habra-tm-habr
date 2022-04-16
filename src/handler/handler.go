@@ -24,9 +24,9 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		log.Printf("Method not supported %s\n", r.Method)
 		w.WriteHeader(http.StatusInternalServerError)
-		defer bodyClose(r.Body)
 		return
 	}
+	defer bodyClose(r.Body)
 
 	log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
 
@@ -45,13 +45,14 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
 	defer bodyClose(resp.Body)
 
 	var respHandler func(w http.ResponseWriter, resp *http.Response) error
 
-	contentType, _ := getContentType(resp.Header)
-	if strings.HasPrefix(contentType, "text/html") {
+	contentType, err := getContentType(resp.Header)
+	if err != nil {
+		respHandler = handleRaw
+	} else if strings.HasPrefix(contentType, "text/html") {
 		respHandler = handleHTML
 	} else {
 		respHandler = handleRaw
