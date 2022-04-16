@@ -1,0 +1,10 @@
+version: '2'
+services:
+  habra-tm-habr:
+      image: habra-tm-habr:rc1
+      build:
+        context: ../
+        dockerfile: ./docker/Dockerfile
+      ports:
+        - "8081:8080"
+        - "9091:9090"

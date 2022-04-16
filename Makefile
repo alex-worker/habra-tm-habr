@@ -2,6 +2,8 @@ build: go-clean go-build
 
 up: docker-build docker-up
 
+upm: docker-build docker-up-metrics
+
 run: build go-run
 
 test: build go-test
@@ -26,3 +28,6 @@ docker-build:
 
 docker-up:
 	docker-compose --file ./docker/docker-compose.yml up
+
+docker-up-metrics:
+	docker-compose --file ./docker/docker-compose-metrics.yml up
