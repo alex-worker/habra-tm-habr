@@ -7,12 +7,8 @@ import (
 	"strings"
 )
 
-type IRequestProcessor interface {
-	Request(r *http.Request) (*http.Response, error)
-}
-
 type ProxyHandler struct {
-	Processor IRequestProcessor
+	ProcessRequest func(r *http.Request) (*http.Response, error)
 }
 
 func bodyClose(Body io.ReadCloser) {
@@ -26,7 +22,7 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
 
-	resp, err := p.Processor.Request(r)
+	resp, err := p.ProcessRequest(r)
 	if err != nil {
 		log.Printf(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
