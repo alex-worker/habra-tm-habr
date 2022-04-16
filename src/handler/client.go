@@ -7,11 +7,15 @@ import (
 	"net/url"
 )
 
+type IRequestProcessor interface {
+	ProcessRequest(r *http.Request) (*http.Response, error)
+}
+
 type RequestProcessor struct {
 	SiteAddress *url.URL
 }
 
-func (h *RequestProcessor) processRequest(r *http.Request) (*http.Response, error) {
+func (h *RequestProcessor) ProcessRequest(r *http.Request) (*http.Response, error) {
 
 	if r.Method != http.MethodGet {
 		msg := fmt.Sprintf("Method not supported %s\n", r.Method)
