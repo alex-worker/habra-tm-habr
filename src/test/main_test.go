@@ -11,7 +11,7 @@ func Test_ManyRequest(t *testing.T) {
 	t.Log("Test_Main")
 
 	srv := httptest.NewServer(&handler.ProxyHandler{
-		Processor: &handler.RequestProcessorEmpty{},
+		Processor: &RequestProcessorEmpty{},
 	})
 	defer srv.Close()
 
