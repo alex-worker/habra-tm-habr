@@ -30,16 +30,16 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	delHeaders(r.Header)
 	resp, err := cli.Do(r)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
 			log.Printf(err.Error())
 		}
 	}(resp.Body)
-
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
 
 	var respHandler func(w http.ResponseWriter, resp *http.Response) error
 
