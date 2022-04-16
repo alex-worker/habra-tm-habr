@@ -1,10 +1,10 @@
+build: go-clean go-build
+
 up: docker-build docker-up
 
 run: build go-run
 
 test: build go-test
-
-build: go-clean go-build
 
 clean: go-clean
 
