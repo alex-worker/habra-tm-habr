@@ -22,7 +22,7 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
 
-	resp, err := p.Processor.ProcessRequest(r)
+	resp, err := p.Processor.Request(r)
 	if err != nil {
 		log.Printf(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
