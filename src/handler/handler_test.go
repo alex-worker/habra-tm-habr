@@ -16,6 +16,7 @@ func doGet(t *testing.T, srvUrl string, bodyChan BodyChan) {
 	resp, err := http.Get(srvUrl)
 	if err != nil {
 		t.Error(err)
+		return
 	}
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
@@ -42,7 +43,7 @@ func TestProxyHandler_ServeHTTP(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		_, err := w.Write([]byte(fixture))
 		if err != nil {
-			t.Fatalf(err.Error())
+			t.Error(err.Error())
 		}
 	}))
 	defer fixtureServer.Close()

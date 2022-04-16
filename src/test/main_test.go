@@ -7,19 +7,18 @@ import (
 	"testing"
 )
 
-type EmptyProcessor struct{}
-
-func (e *EmptyProcessor) Request(*http.Request) (*http.Response, error) {
-	resp := &http.Response{}
-	return resp, nil
-}
-
 func Test_ManyRequest(t *testing.T) {
 	t.Log("Test_Main")
 
 	srv := httptest.NewServer(&handler.ProxyHandler{
-		Processor: &EmptyProcessor{},
+		Processor: &handler.RequestProcessorEmpty{},
 	})
 	defer srv.Close()
 
+	for i := 0; i < 10; i++ {
+		_, err := http.Get(srv.URL)
+		if err != nil {
+			t.Error(err)
+		}
+	}
 }

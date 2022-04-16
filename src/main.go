@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	_ "net/http/pprof"
-	"net/url"
 )
 
 const profileAddress = ":9090"
@@ -25,24 +24,26 @@ func main() {
 
 	log.Printf("Proxy address %v -> %v\n", proxyAddress, siteAddress)
 
-	proxyUrl, err := url.Parse(siteAddress)
-	if err != nil {
-		panic(err)
-	}
+	//proxyUrl, err := url.Parse(siteAddress)
+	//if err != nil {
+	//	panic(err)
+	//}
 
-	myRequestProcessor := handler.RequestProcessor{
-		SiteAddress: proxyUrl,
-	}
+	//if err != nil {
+	//	panic(err)
+	//}
+
+	//myRequestProcessor := handler.RequestProcessor{
+	//	SiteAddress: proxyUrl,
+	//}
+
+	myEmptyRequestProcessor := &handler.RequestProcessorEmpty{}
 
 	myHandler := &handler.ProxyHandler{
-		Processor: &myRequestProcessor,
+		Processor: myEmptyRequestProcessor,
 	}
 
-	if err != nil {
-		panic(err)
-	}
-
-	err = http.ListenAndServe(proxyAddress, myHandler)
+	err := http.ListenAndServe(proxyAddress, myHandler)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
