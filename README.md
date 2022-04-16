@@ -45,3 +45,13 @@ http://localhost:9090/debug/pprof/
 ```bash
   go tool pprof main http://127.0.0.1:9090/debug/pprof/profile
 ```
+
+
+## Apache benchmarking tool:
+
+```bash
+ab -k -c 8 -n 100000 "http://127.0.0.1:8080/v1/leftpad/?str=test&len=50&chr=*"
+# -k   Включить постоянное HTTP-соединение (KeepAlive)
+# -c   Количество одновременных запросов
+# -n   Количество запросов, которое будет делать ab
+```

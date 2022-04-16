@@ -7,10 +7,6 @@ import (
 	"net/url"
 )
 
-type IRequestProcessor interface {
-	Request(r *http.Request) (*http.Response, error)
-}
-
 type RequestProcessor struct {
 	SiteAddress *url.URL
 }

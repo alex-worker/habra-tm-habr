@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type IRequestProcessor interface {
+	Request(r *http.Request) (*http.Response, error)
+}
+
 type ProxyHandler struct {
 	Processor IRequestProcessor
 }
