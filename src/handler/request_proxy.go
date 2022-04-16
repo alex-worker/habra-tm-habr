@@ -8,14 +8,14 @@ import (
 )
 
 type IRequestProcessor interface {
-	ProcessRequest(r *http.Request) (*http.Response, error)
+	Request(r *http.Request) (*http.Response, error)
 }
 
 type RequestProcessor struct {
 	SiteAddress *url.URL
 }
 
-func (h *RequestProcessor) ProcessRequest(r *http.Request) (*http.Response, error) {
+func (h *RequestProcessor) Request(r *http.Request) (*http.Response, error) {
 
 	if r.Method != http.MethodGet {
 		msg := fmt.Sprintf("Method not supported %s\n", r.Method)

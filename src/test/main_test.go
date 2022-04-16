@@ -9,7 +9,7 @@ import (
 
 type EmptyProcessor struct{}
 
-func (e *EmptyProcessor) ProcessRequest(r *http.Request) (*http.Response, error) {
+func (e *EmptyProcessor) Request(*http.Request) (*http.Response, error) {
 	resp := &http.Response{}
 	return resp, nil
 }
