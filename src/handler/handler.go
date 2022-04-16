@@ -4,12 +4,12 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"net/url"
 	"strings"
 )
 
 type ProxyHandler struct {
-	SiteAddress *url.URL
+	//SiteAddress *url.URL
+	Processor *RequestProcessor
 }
 
 func bodyClose(Body io.ReadCloser) {
@@ -21,24 +21,25 @@ func bodyClose(Body io.ReadCloser) {
 
 func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
+	log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
+
 	if r.Method != http.MethodGet {
 		log.Printf("Method not supported %s\n", r.Method)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
-
-	cli := http.Client{}
+	//cli := http.Client{}
 
 	// set req Host, URL and Request URI to forward a request to the origin server
-	r.Host = p.SiteAddress.Host
-	r.URL.Host = p.SiteAddress.Host
-	r.URL.Scheme = p.SiteAddress.Scheme
-	r.RequestURI = ""
+	//r.Host = p.SiteAddress.Host
+	//r.URL.Host = p.SiteAddress.Host
+	//r.URL.Scheme = p.SiteAddress.Scheme
+	//r.RequestURI = ""
 
-	delHeaders(r.Header)
-	resp, err := cli.Do(r)
+	resp, err := p.Processor.processRequest(r)
+	//delHeaders(r.Header)
+	//resp, err := cli.Do(r)
 	if err != nil {
 		log.Printf(err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
