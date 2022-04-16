@@ -53,8 +53,10 @@ func TestProxyHandler_ServeHTTP(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	myRequestProcessor := &RequestProcessor{SiteAddress: backendURL}
+
 	handler := &ProxyHandler{
-		Processor: &RequestProcessor{SiteAddress: backendURL},
+		ProcessRequest: myRequestProcessor.Request,
 	}
 
 	srv := httptest.NewServer(handler)

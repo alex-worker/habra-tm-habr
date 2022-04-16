@@ -35,7 +35,7 @@ func main() {
 	}
 
 	myHandler := &handler.ProxyHandler{
-		Processor: myRequestProcessor,
+		ProcessRequest: myRequestProcessor.Request,
 	}
 
 	err = http.ListenAndServe(proxyAddress, myHandler)
