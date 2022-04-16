@@ -2,9 +2,9 @@ package main
 
 import (
 	"habra-tm-habr/src/handler"
+	"habra-tm-habr/src/metrics"
 	"log"
 	"net/http"
-	_ "net/http/pprof"
 	"net/url"
 )
 
@@ -15,13 +15,7 @@ const siteAddress = "http://habrahabr.ru"
 
 func main() {
 
-	go func() {
-		log.Printf("Profile address: %v/debug/pprof/\n", profileAddress)
-		err := http.ListenAndServe(profileAddress, nil)
-		if err != nil {
-			log.Fatalf(err.Error())
-		}
-	}()
+	go metrics.RunMetrics(profileAddress)
 
 	log.Printf("Proxy address %v -> %v\n", proxyAddress, siteAddress)
 
