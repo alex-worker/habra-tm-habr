@@ -25,6 +25,7 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Method not supported %s\n", r.Method)
 		w.WriteHeader(http.StatusInternalServerError)
 		defer bodyClose(r.Body)
+		return
 	}
 
 	log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
