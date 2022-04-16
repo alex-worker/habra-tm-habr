@@ -12,10 +12,19 @@ type ProxyHandler struct {
 	SiteAddress *url.URL
 }
 
+func bodyClose(Body io.ReadCloser) {
+	err := Body.Close()
+	if err != nil {
+		log.Printf(err.Error())
+	}
+}
+
 func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodGet {
-		log.Fatalf("Method not supported %s", r.Method)
+		log.Printf("Method not supported %s\n", r.Method)
+		w.WriteHeader(http.StatusInternalServerError)
+		defer bodyClose(r.Body)
 	}
 
 	log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
@@ -30,16 +39,13 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	delHeaders(r.Header)
 	resp, err := cli.Do(r)
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Printf(err.Error())
-		}
-	}(resp.Body)
-
 	if err != nil {
-		log.Fatalf(err.Error())
+		log.Printf(err.Error())
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
+
+	defer bodyClose(resp.Body)
 
 	var respHandler func(w http.ResponseWriter, resp *http.Response) error
 
