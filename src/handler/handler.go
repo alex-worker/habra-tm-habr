@@ -35,18 +35,18 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	defer bodyClose(resp.Body)
 
-	var respHandler response.ProcessResponse
+	var myProcessResponse response.ProcessResponse
 
 	contentType, err := headers.GetContentType(resp.Header)
 	if err != nil {
-		respHandler = ResponseRaw.Handle
+		myProcessResponse = ResponseRaw.Handle
 	} else if strings.HasPrefix(contentType, "text/html") {
-		respHandler = ResponseHTML.Handle
+		myProcessResponse = ResponseHTML.Handle
 	} else {
-		respHandler = ResponseRaw.Handle
+		myProcessResponse = ResponseRaw.Handle
 	}
 
-	err = respHandler(w, resp)
+	err = myProcessResponse(w, resp)
 	if err != nil {
 		log.Println(err.Error())
 	}
