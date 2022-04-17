@@ -3,7 +3,7 @@ package request
 import (
 	"errors"
 	"fmt"
-	"habra-tm-habr/src/handler/headers"
+	"habra-tm-habr/src/handler/utils/headers"
 	"net/http"
 	"net/url"
 )

@@ -1,9 +1,9 @@
 package html
 
 import (
-	"habra-tm-habr/src/handler/headers"
 	"habra-tm-habr/src/handler/response/html/parser"
 	"habra-tm-habr/src/handler/response/html/replacer"
+	"habra-tm-habr/src/handler/utils/headers"
 	"net/http"
 )
 

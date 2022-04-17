@@ -1,7 +1,7 @@
 package raw
 
 import (
-	"habra-tm-habr/src/handler/headers"
+	"habra-tm-habr/src/handler/utils/headers"
 	"io"
 	"net/http"
 )

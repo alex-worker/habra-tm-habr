@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"habra-tm-habr/src/handler/headers"
 	ResponseHTML "habra-tm-habr/src/handler/response/html"
 	ResponseRaw "habra-tm-habr/src/handler/response/raw"
+	"habra-tm-habr/src/handler/utils/headers"
 	"io"
 	"log"
 	"net/http"
