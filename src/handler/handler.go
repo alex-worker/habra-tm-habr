@@ -12,9 +12,7 @@ import (
 	"strings"
 )
 
-type ProxyHandler struct {
-	ProcessRequest request.ProcessRequest
-}
+type RequestToResponse func(w http.ResponseWriter, r *http.Request)
 
 func bodyClose(Body io.ReadCloser) {
 	err := Body.Close()
@@ -23,31 +21,32 @@ func bodyClose(Body io.ReadCloser) {
 	}
 }
 
-func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func NewRequestToResponse(DoRequest request.ProcessRequest) RequestToResponse {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
 
-	log.Println("Addr: ", r.RemoteAddr, "Method:", r.Method, "URL: ", r.URL.String())
+		resp, err := DoRequest(r)
+		if err != nil {
+			log.Printf(err.Error())
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		defer bodyClose(resp.Body)
 
-	resp, err := p.ProcessRequest(r)
-	if err != nil {
-		log.Printf(err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	defer bodyClose(resp.Body)
+		var myProcessResponse response.ProcessResponse
 
-	var myProcessResponse response.ProcessResponse
+		contentType, err := headers.GetContentType(resp.Header)
+		if err != nil {
+			myProcessResponse = ResponseRaw.Handle
+		} else if strings.HasPrefix(contentType, "text/html") {
+			myProcessResponse = ResponseHTML.Handle
+		} else {
+			myProcessResponse = ResponseRaw.Handle
+		}
 
-	contentType, err := headers.GetContentType(resp.Header)
-	if err != nil {
-		myProcessResponse = ResponseRaw.Handle
-	} else if strings.HasPrefix(contentType, "text/html") {
-		myProcessResponse = ResponseHTML.Handle
-	} else {
-		myProcessResponse = ResponseRaw.Handle
-	}
-
-	err = myProcessResponse(w, resp)
-	if err != nil {
-		log.Println(err.Error())
+		err = myProcessResponse(w, resp)
+		if err != nil {
+			log.Println(err.Error())
+		}
 	}
 }

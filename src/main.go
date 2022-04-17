@@ -25,11 +25,11 @@ func main() {
 		panic(err)
 	}
 
-	myHandler := &handler.ProxyHandler{
-		ProcessRequest: request.NewRequestProxy(proxyUrl),
-	}
+	myRequestProxy := request.NewRequestProxy(proxyUrl)
+	myRequestToResponse := handler.NewRequestToResponse(myRequestProxy)
 
-	err = http.ListenAndServe(proxyAddress, myHandler)
+	err = http.ListenAndServe(proxyAddress, http.HandlerFunc(myRequestToResponse))
+
 	if err != nil {
 		log.Fatalf(err.Error())
 	}

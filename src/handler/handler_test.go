@@ -55,12 +55,9 @@ func TestProxyHandler_ServeHTTP(t *testing.T) {
 	}
 
 	myProcessRequest := request.NewRequestProxy(backendURL)
+	myRequestToResponse := NewRequestToResponse(myProcessRequest)
 
-	handler := &ProxyHandler{
-		ProcessRequest: myProcessRequest,
-	}
-
-	srv := httptest.NewServer(handler)
+	srv := httptest.NewServer(http.HandlerFunc(myRequestToResponse))
 	defer srv.Close()
 
 	_, err = url.Parse(srv.URL)
