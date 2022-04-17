@@ -1,17 +1,18 @@
-package handler
+package request
 
 import (
 	"errors"
 	"fmt"
+	"habra-tm-habr/src/handler/headers"
 	"net/http"
 	"net/url"
 )
 
-type RequestProcessor struct {
+type Processor struct {
 	SiteAddress *url.URL
 }
 
-func (h *RequestProcessor) Request(r *http.Request) (*http.Response, error) {
+func (h *Processor) Request(r *http.Request) (*http.Response, error) {
 
 	if r.Method != http.MethodGet {
 		msg := fmt.Sprintf("Method not supported %s\n", r.Method)
@@ -26,6 +27,6 @@ func (h *RequestProcessor) Request(r *http.Request) (*http.Response, error) {
 	r.URL.Scheme = h.SiteAddress.Scheme
 	r.RequestURI = ""
 
-	delHeaders(r.Header)
+	headers.DelHeaders(r.Header)
 	return cli.Do(r)
 }

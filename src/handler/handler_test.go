@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"habra-tm-habr/src/handler/request"
 	"io"
 	"log"
 	"net/http"
@@ -53,7 +54,7 @@ func TestProxyHandler_ServeHTTP(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	myRequestProcessor := &RequestProcessor{SiteAddress: backendURL}
+	myRequestProcessor := &request.Processor{SiteAddress: backendURL}
 
 	handler := &ProxyHandler{
 		ProcessRequest: myRequestProcessor.Request,

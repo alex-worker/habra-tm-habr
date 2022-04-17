@@ -2,6 +2,7 @@ package main
 
 import (
 	"habra-tm-habr/src/handler"
+	"habra-tm-habr/src/handler/request"
 	"habra-tm-habr/src/metrics"
 	"log"
 	"net/http"
@@ -24,7 +25,7 @@ func main() {
 		panic(err)
 	}
 
-	myRequestProcessor := &handler.RequestProcessor{
+	myRequestProcessor := &request.Processor{
 		SiteAddress: proxyUrl,
 	}
 

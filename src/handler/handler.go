@@ -1,6 +1,9 @@
 package handler
 
 import (
+	"habra-tm-habr/src/handler/headers"
+	ResponseHTML "habra-tm-habr/src/handler/response/html"
+	ResponseRaw "habra-tm-habr/src/handler/response/raw"
 	"io"
 	"log"
 	"net/http"
@@ -32,13 +35,13 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	var respHandler func(w http.ResponseWriter, resp *http.Response) error
 
-	contentType, err := getContentType(resp.Header)
+	contentType, err := headers.GetContentType(resp.Header)
 	if err != nil {
-		respHandler = handleRaw
+		respHandler = ResponseRaw.Handle
 	} else if strings.HasPrefix(contentType, "text/html") {
-		respHandler = handleHTML
+		respHandler = ResponseHTML.Handle
 	} else {
-		respHandler = handleRaw
+		respHandler = ResponseRaw.Handle
 	}
 
 	err = respHandler(w, resp)
