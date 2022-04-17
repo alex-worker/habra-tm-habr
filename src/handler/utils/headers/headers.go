@@ -14,19 +14,6 @@ var hopHeaders = []string{
 	"Transfer-Encoding",
 	"Public-Key-Pins",
 	"Keep-Alive",
-
-	//"Upgrade-Insecure-Requests",
-	//"Upgrade",
-	//"Proxy-Authenticate",
-	//"Proxy-Authorization",
-	//"Te", // canonicalized version of "TE"
-	//"Trailers",
-	//"Transfer-Encoding",
-	//"Sec-Fetch-Dest",
-	//"Sec-Fetch-Mode",
-	//"Sec-Fetch-Site",
-	//"Accept-Encoding",
-	//"Content-Encoding",
 }
 
 func DelHeaders(header http.Header) {
