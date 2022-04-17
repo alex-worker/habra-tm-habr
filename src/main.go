@@ -25,12 +25,8 @@ func main() {
 		panic(err)
 	}
 
-	myRequestProcessor := &request.Processor{
-		SiteAddress: proxyUrl,
-	}
-
 	myHandler := &handler.ProxyHandler{
-		ProcessRequest: myRequestProcessor.Request,
+		ProcessRequest: request.NewRequestProxy(proxyUrl),
 	}
 
 	err = http.ListenAndServe(proxyAddress, myHandler)

@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"habra-tm-habr/src/handler/request"
+	"habra-tm-habr/src/handler/response"
 	ResponseHTML "habra-tm-habr/src/handler/response/html"
 	ResponseRaw "habra-tm-habr/src/handler/response/raw"
 	"habra-tm-habr/src/handler/utils/headers"
@@ -11,7 +13,7 @@ import (
 )
 
 type ProxyHandler struct {
-	ProcessRequest func(r *http.Request) (*http.Response, error)
+	ProcessRequest request.ProcessRequest
 }
 
 func bodyClose(Body io.ReadCloser) {
@@ -33,7 +35,7 @@ func (p *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	defer bodyClose(resp.Body)
 
-	var respHandler func(w http.ResponseWriter, resp *http.Response) error
+	var respHandler response.ProcessResponse
 
 	contentType, err := headers.GetContentType(resp.Header)
 	if err != nil {
