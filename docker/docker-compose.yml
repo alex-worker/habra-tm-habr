@@ -1,4 +1,3 @@
-version: '2'
 services:
   habra-tm-habr:
       image: habra-tm-habr:rc1
