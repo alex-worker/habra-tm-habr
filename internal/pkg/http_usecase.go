@@ -1,4 +1,4 @@
-package http
+package pkg
 
 import (
 	"habra-tm-habr/internal/pkg/network/http/http_handler"
