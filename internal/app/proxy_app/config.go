@@ -1,13 +1,16 @@
 package proxy_app
 
-type ProxyConfig struct {
-	ProxyAddress string
-	SiteAddress  string
+type AppConfig struct {
+	Proxy          ProxyConfig
+	ProfileAddress string
+	RunesInWorld   int
 }
 
-func GetDefaultProxyConfig() ProxyConfig {
-	return ProxyConfig{
-		ProxyAddress: ":8080",
-		SiteAddress:  "http://habrahabr.ru",
+func GetDefaultConfig() AppConfig {
+	proxyConf := GetDefaultProxyConfig()
+	return AppConfig{
+		Proxy:          proxyConf,
+		RunesInWorld:   6,
+		ProfileAddress: ":9090",
 	}
 }

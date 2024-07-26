@@ -8,15 +8,6 @@ import (
 	"log"
 )
 
-func GetDefaultConfig() AppConfig {
-	proxyConf := GetDefaultProxyConfig()
-	return AppConfig{
-		Proxy:          proxyConf,
-		RunesInWorld:   6,
-		ProfileAddress: ":9090",
-	}
-}
-
 func New(c AppConfig) app.ApplicationInterface {
 	log.Printf("Proxy address %v -> %v\n", c.Proxy.ProxyAddress, c.Proxy.SiteAddress)
 
@@ -24,12 +15,6 @@ func New(c AppConfig) app.ApplicationInterface {
 		conf: c,
 	}
 	return a
-}
-
-type AppConfig struct {
-	Proxy          ProxyConfig
-	ProfileAddress string
-	RunesInWorld   int
 }
 
 type App struct {
