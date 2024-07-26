@@ -1,7 +1,6 @@
 package proxy_app
 
 import (
-	"habra-tm-habr/config"
 	"habra-tm-habr/internal/app"
 	HttpUseCase "habra-tm-habr/internal/pkg/network/http"
 	"habra-tm-habr/internal/pkg/network/metrics"
@@ -9,8 +8,17 @@ import (
 	"log"
 )
 
-func New(c config.Config) app.ApplicationInterface {
-	log.Printf("Proxy address %v -> %v\n", c.ProxyAddress, c.SiteAddress)
+func GetDefaultConfig() AppConfig {
+	proxyConf := GetDefaultProxyConfig()
+	return AppConfig{
+		Proxy:          proxyConf,
+		RunesInWorld:   6,
+		ProfileAddress: ":9090",
+	}
+}
+
+func New(c AppConfig) app.ApplicationInterface {
+	log.Printf("Proxy address %v -> %v\n", c.Proxy.ProxyAddress, c.Proxy.SiteAddress)
 
 	a := &App{
 		conf: c,
@@ -18,22 +26,26 @@ func New(c config.Config) app.ApplicationInterface {
 	return a
 }
 
+type AppConfig struct {
+	Proxy          ProxyConfig
+	ProfileAddress string
+	RunesInWorld   int
+}
+
 type App struct {
-	conf config.Config
+	conf AppConfig
 }
 
 func (a *App) Run() {
 	log.Printf("Application run...")
 
-	if a.conf.MetricsEnabled {
-		go metrics.RunMetrics(a.conf.ProfileAddress)
-	}
+	go metrics.RunMetrics(a.conf.ProfileAddress)
 
 	p := text_processor.NewTmProcessor(a.conf.RunesInWorld)
-	myHandler := HttpUseCase.NewHttpProxyTextProcessorHandler(a.conf.SiteAddress, p)
+	myHandler := HttpUseCase.NewHttpProxyTextProcessorHandler(a.conf.Proxy.SiteAddress, p)
 	srv := HttpUseCase.NewHttpServer()
 
-	err := srv.Run(a.conf.ProxyAddress, myHandler)
+	err := srv.Run(a.conf.Proxy.ProxyAddress, myHandler)
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
