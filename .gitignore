@@ -1,2 +1,5 @@
 /.idea
 main
+git-reset-author.sh
+git-set-local.sh
+git-set-remotes.sh
