@@ -10,8 +10,8 @@ type TmProcessor struct {
 	reg *regexp.Regexp
 }
 
-func NewTmProcessor(runesInWord int) TextProcessorInterface {
-	return &TmProcessor{
+func NewTmProcessor(runesInWord int) TmProcessor {
+	return TmProcessor{
 		reg: setRunesInWorld(runesInWord),
 	}
 }

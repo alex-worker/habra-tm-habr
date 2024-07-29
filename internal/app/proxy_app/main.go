@@ -3,6 +3,7 @@ package proxy_app
 import (
 	UseCase "habra-tm-habr/internal/pkg"
 	"habra-tm-habr/internal/pkg/network/http/metrics"
+	"habra-tm-habr/internal/pkg/text_processor"
 	"log"
 )
 
@@ -23,9 +24,9 @@ func (a *App) Run() {
 
 	go metrics.RunMetrics(a.conf.Profile)
 
-	p := UseCase.NewTmProcessor(a.conf.RunesInWorld)
+	p := text_processor.NewTmProcessor(a.conf.RunesInWorld)
 
-	myHandler := UseCase.NewHttpProxyTextProcessorHandler(a.conf.Proxy.SiteAddress, p)
+	myHandler := UseCase.NewHttpProxyTextProcessorHandler(a.conf.Proxy.SiteAddress, &p)
 
 	err := UseCase.NewHttpServer().Run(a.conf.Proxy.ProxyAddress, myHandler)
 	if err != nil {

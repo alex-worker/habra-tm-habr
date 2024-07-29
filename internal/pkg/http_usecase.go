@@ -5,11 +5,12 @@ import (
 	"habra-tm-habr/internal/pkg/network/http/http_server"
 	"habra-tm-habr/internal/pkg/network/http/request_handler"
 	"habra-tm-habr/internal/pkg/network/http/response_handler"
-	"habra-tm-habr/internal/pkg/text_processor"
 	"net/http"
 )
 
-func NewHttpProxyTextProcessorHandler(siteAddress string, p text_processor.TextProcessorInterface) http.Handler {
+type TextProcessor interface{}
+
+func NewHttpProxyTextProcessorHandler(siteAddress string, p response_handler.TextProcessor) http.Handler {
 	handlerRequest := request_handler.NewRequestProxyHandler(siteAddress)
 	handlerRaw := response_handler.NewHandlerRaw()
 	handlerHttp := response_handler.NewHandlerHtml(p)
