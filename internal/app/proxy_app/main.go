@@ -24,7 +24,7 @@ func (a *App) Run() {
 
 	go metrics.RunMetrics(a.conf.Profile)
 
-	p := text_processor.NewTmProcessor(a.conf.RunesInWorld)
+	p := text_processor.NewTmProcessor(a.conf.TextConf.RunesInWorld)
 
 	myHandler := UseCase.NewHttpProxyTextProcessorHandler(a.conf.Proxy.SiteAddress, &p)
 

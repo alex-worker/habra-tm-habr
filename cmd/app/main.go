@@ -7,7 +7,7 @@ import (
 
 func main() {
 	c := proxy_app.GetDefaultConfig()
-	c.RunesInWorld = 6
+	c.TextConf.RunesInWorld = 6
 
 	a := proxy_app.New(c)
 	log.Printf("application: %+v", a)
