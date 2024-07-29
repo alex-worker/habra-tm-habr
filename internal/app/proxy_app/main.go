@@ -1,19 +1,17 @@
 package proxy_app
 
 import (
-	"habra-tm-habr/internal/app"
 	UseCase "habra-tm-habr/internal/pkg"
 	"habra-tm-habr/internal/pkg/network/http/metrics"
 	"log"
 )
 
-func New(c AppConfig) app.ApplicationInterface {
+func New(c AppConfig) App {
 	log.Printf("Proxy address %v -> %v\n", c.Proxy.ProxyAddress, c.Proxy.SiteAddress)
 
-	a := &App{
+	return App{
 		conf: c,
 	}
-	return a
 }
 
 type App struct {
