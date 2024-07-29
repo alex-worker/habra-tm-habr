@@ -2,8 +2,6 @@ package http_handler
 
 import (
 	"habra-tm-habr/internal/pkg/html/headers"
-	"habra-tm-habr/internal/pkg/network/http/request_handler"
-	"habra-tm-habr/internal/pkg/network/http/response_handler"
 	"io"
 	"log"
 	"net/http"
@@ -11,15 +9,23 @@ import (
 )
 
 type ProxyHandler struct {
-	handlerRequest request_handler.HttpRequestHadnlerInterface
-	handlerRaw     response_handler.HttpResponseHanlderInterface
-	handlerHtml    response_handler.HttpResponseHanlderInterface
+	handlerRequest RequestHadnler
+	handlerRaw     ResponseHanlder
+	handlerHtml    ResponseHanlder
+}
+
+type RequestHadnler interface {
+	Request(r *http.Request) (*http.Response, error)
+}
+
+type ResponseHanlder interface {
+	Handle(w http.ResponseWriter, resp *http.Response) error
 }
 
 func NewProxyHandler(
-	handlerRequest request_handler.HttpRequestHadnlerInterface,
-	handlerRaw response_handler.HttpResponseHanlderInterface,
-	handlerHtml response_handler.HttpResponseHanlderInterface) http.Handler {
+	handlerRequest RequestHadnler,
+	handlerRaw ResponseHanlder,
+	handlerHtml ResponseHanlder) http.Handler {
 
 	return &ProxyHandler{
 		handlerRequest: handlerRequest,

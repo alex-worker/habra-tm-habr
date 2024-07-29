@@ -12,12 +12,12 @@ type RequestProxyHandler struct {
 	siteUrl *url.URL
 }
 
-func NewRequestProxyHandler(siteAddress string) HttpRequestHadnlerInterface {
+func NewRequestProxyHandler(siteAddress string) RequestProxyHandler {
 	siteUrl, err := url.Parse(siteAddress)
 	if err != nil {
 		panic(err)
 	}
-	return &RequestProxyHandler{siteUrl}
+	return RequestProxyHandler{siteUrl}
 }
 
 func (h *RequestProxyHandler) Request(r *http.Request) (*http.Response, error) {

@@ -3,17 +3,20 @@ package response_handler
 import (
 	"habra-tm-habr/internal/pkg/html/headers"
 	"habra-tm-habr/internal/pkg/html/nodes"
-	"habra-tm-habr/internal/pkg/text_processor"
 	"net/http"
 )
 
 type HandlerHtml struct {
-	processor text_processor.TextProcessorInterface
+	processor TextProcessor
 }
 
-func NewHandlerHtml(processor text_processor.TextProcessorInterface) HttpResponseHanlderInterface {
-	return &HandlerHtml{
-		processor: processor,
+type TextProcessor interface {
+	ProcessText(str string) string
+}
+
+func NewHandlerHtml(processor TextProcessor) HandlerHtml {
+	return HandlerHtml{
+		processor,
 	}
 }
 

@@ -14,7 +14,7 @@ func NewHttpProxyTextProcessorHandler(siteAddress string, p text_processor.TextP
 	handlerRaw := response_handler.NewHandlerRaw()
 	handlerHttp := response_handler.NewHandlerHtml(p)
 
-	myHandler := http_handler.NewProxyHandler(handlerRequest, handlerRaw, handlerHttp)
+	myHandler := http_handler.NewProxyHandler(&handlerRequest, &handlerRaw, &handlerHttp)
 	return myHandler
 }
 

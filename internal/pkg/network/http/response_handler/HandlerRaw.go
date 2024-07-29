@@ -8,8 +8,8 @@ import (
 
 type HandlerRaw struct{}
 
-func NewHandlerRaw() HttpResponseHanlderInterface {
-	return &HandlerRaw{}
+func NewHandlerRaw() HandlerRaw {
+	return HandlerRaw{}
 }
 
 func (h *HandlerRaw) Handle(w http.ResponseWriter, resp *http.Response) error {
