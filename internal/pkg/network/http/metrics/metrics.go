@@ -3,6 +3,7 @@ package metrics
 import (
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 )
 
 type ProfileConfig struct {
