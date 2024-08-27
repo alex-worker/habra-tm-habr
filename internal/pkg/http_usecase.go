@@ -8,8 +8,6 @@ import (
 	"net/http"
 )
 
-type TextProcessor interface{}
-
 func NewHttpProxyTextProcessorHandler(siteAddress string, p response_handler.TextProcessor) http.Handler {
 	handlerRequest := request_handler.NewRequestProxyHandler(siteAddress)
 	handlerRaw := response_handler.NewHandlerRaw()
